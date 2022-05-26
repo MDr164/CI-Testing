@@ -1,0 +1,62 @@
+name: Tests
+
+on: push
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.18]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{matrix.go-version}}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: go test -v ./...
+
+  race:
+    strategy:
+      matrix:
+        go-version: [1.18]
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{matrix.go-version}}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run race condition tests
+        run: go test -race -shuffle=on ./... 
+
+  coverage:
+    strategy:
+      matrix:
+        go-version: [1.18]
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{matrix.go-version}}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run coverage tests
+        run: go test -cover -coverprofile=coverage.txt ./...
+
+      - name: Upload report to Codecov
+        uses: codecov/codecov-action@v3
