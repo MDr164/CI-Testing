@@ -1,3 +1,3 @@
-module github.com/MDr164/CI-Testing
+module github.com/MDr164/CI-Testing/src
 
-go 1.19
+go 1.20
