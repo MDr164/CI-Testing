@@ -5,5 +5,5 @@ package main
 import "log"
 
 func main() {
-	log.Println("This is just a dummy program.")
+	log.Println("Template")
 }

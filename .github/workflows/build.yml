@@ -1,7 +1,7 @@
-name: Release
+name: Build
 on: push
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,9 +15,5 @@ jobs:
       - name: Build CI Tool
         working-directory: ./ci
         run: go build
-      - name: Run Release Pipeline
-        run: ./ci/ci release
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          COSIGN_KEY: ${{secrets.COSIGN_KEY}}
-          COSIGN_PWD: ${{secrets.COSIGN_PWD}}
+      - name: Run Build Pipeline
+        run: ./ci/ci build --strip
