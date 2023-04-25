@@ -35,12 +35,10 @@ func (c *ReleaseCmd) Run(ctx *Context) error {
 		WithExec([]string{"curl", "-fL", fmt.Sprintf("https://github.com/goreleaser/goreleaser/releases/download/v%s/goreleaser_%s_x86_64.apk", GORELEASER_VER, GORELEASER_VER), "-o", "/tmp/goreleaser.apk"}).
 		WithExec([]string{"apk", "add", "--no-cache", "--allow-untrusted", "/tmp/goreleaser.apk"})
 
-	resultPath := "./results"
+	resultPath := "./dist"
 
 	runner = runner.
 		WithSecretVariable("GITHUB_TOKEN", client.Host().EnvVariable("GITHUB_TOKEN").Secret()).
-		WithSecretVariable("COSIGN_KEY", client.Host().EnvVariable("COSIGN_KEY").Secret()).
-		WithSecretVariable("COSIGN_PWD", client.Host().EnvVariable("COSIGN_PWD").Secret()).
 		WithExec([]string{"goreleaser", "release", "--snapshot"})
 
 	resultDir := runner.Directory(resultPath)
