@@ -1,5 +1,7 @@
 name: Tests
 on: push
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -7,13 +9,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: "1.20"
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build CI Tool
+      - name: Build CI tool
         working-directory: ./ci
         run: go build
-      - name: Run Tests
+      - name: Run tests
         run: ./ci/ci test
   race:
     runs-on: ubuntu-latest
@@ -23,13 +25,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: "1.20"
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build CI Tool
+      - name: Build CI tool
         working-directory: ./ci
         run: go build
-      - name: Run Race Detector
+      - name: Run race condition detector
         run: ./ci/ci test --race
   coverage:
     runs-on: ubuntu-latest
@@ -39,15 +41,15 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: "1.20"
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build CI Tool
+      - name: Build CI tool
         working-directory: ./ci
         run: go build
-      - name: Run Coverage Reporter
+      - name: Run coverage reporter
         run: ./ci/ci test --cover
-      - name: Upload Report to Codecov
+      - name: Upload report to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: results/cover.out
