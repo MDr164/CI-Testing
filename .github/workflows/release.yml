@@ -1,8 +1,8 @@
 name: Release
 on: 
   push:
-#    tags:
-#      - "v*"
+   tags:
+     - "v*"
 permissions:
   contents: read
 jobs:
@@ -29,7 +29,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
-          args: release --clean --snapshot
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate subject
