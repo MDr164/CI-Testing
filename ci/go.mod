@@ -3,7 +3,7 @@ module github.com/MDr164/CI-Testing/ci
 go 1.20
 
 require (
-	dagger.io/dagger v0.6.2
+	dagger.io/dagger v0.7.0
 	github.com/alecthomas/kong v0.7.1
 	github.com/rs/zerolog v1.29.1
 )
