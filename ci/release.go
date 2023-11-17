@@ -38,7 +38,7 @@ func (c *ReleaseCmd) Run(ctx *Context) error {
 	resultPath := "./dist"
 
 	runner = runner.
-		WithSecretVariable("GITHUB_TOKEN", client.Host().EnvVariable("GITHUB_TOKEN").Secret()).
+		WithSecretVariable("GITHUB_TOKEN", client.SetSecret("GH-TOKEN", os.Getenv("GITHUB_TOKEN"))).
 		WithExec([]string{"goreleaser", "release", "--snapshot"})
 
 	resultDir := runner.Directory(resultPath)
