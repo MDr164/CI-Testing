@@ -2,8 +2,8 @@
 
 package main
 
-import "testing"
+import "log"
 
-func TestCode(t *testing.T) {
-	main()
+func main() {
+	log.Println("Template")
 }
