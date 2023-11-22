@@ -28,7 +28,7 @@ jobs:
         uses: dagger/dagger-for-github@v5
         with:
           verb: run
-          args: go run ci/main.go -cmd "go build -o output/ -buildmode=pie ./cmd/example/main.go"
+          args: go run ci/main.go -cmd "go build -o output/ ./cmd/example/main.go"
           version: "0.9.3"
       - uses: actions/upload-artifact@v3
         with:
