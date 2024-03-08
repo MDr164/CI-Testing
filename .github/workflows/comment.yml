@@ -1,0 +1,27 @@
+name: Comment
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+     - master
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Failing Step
+        id: demo
+        continue-on-error: true
+        run: exit 1
+      - name: Comment PR
+        if: steps.demo.outcome == 'failure'
+        run: gh pr comment $URL --edit-last --body $BODY || gh pr comment $URL --body $BODY
+        env:
+          BODY: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ github.job }}
+          URL: ${{ github.event.pull_request.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
