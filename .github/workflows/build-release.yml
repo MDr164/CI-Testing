@@ -1,6 +1,7 @@
 name: Build-FA
 on:
   release:
+    types: ['published']
   pull_request:
   merge_group:
   push:
