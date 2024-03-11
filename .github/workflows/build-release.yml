@@ -1,0 +1,17 @@
+name: Build-FA
+on:
+  release:
+  pull_request:
+  merge_group:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello world
+        run: |
+          echo hello world
