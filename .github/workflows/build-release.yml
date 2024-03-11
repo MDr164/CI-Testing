@@ -1,11 +1,10 @@
 name: Build-FA
 on:
-  release:
-    types: ['released']
   pull_request:
   merge_group:
   push:
     branches: ['main']
+    tags: ['v*']
 
 permissions:
   contents: read
