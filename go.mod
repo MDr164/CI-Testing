@@ -2,7 +2,7 @@ module github.com/MDr164/CI-Testing
 
 go 1.21
 
-require dagger.io/dagger v0.10.1
+require dagger.io/dagger v0.10.3
 
 require (
 	github.com/99designs/gqlgen v0.17.31 // indirect
