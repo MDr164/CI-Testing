@@ -1,0 +1,56 @@
+name: Commit-Matrix
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+     - master
+permissions:
+  contents: read
+jobs:
+  define-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      commits: ${{ steps.commits.outputs.refs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Get all commit refs
+        id: commits
+        run: |
+          echo "refs=[$(git log -z --pretty=format:"'%H'," ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | sed 's/.$//')]" >> "$GITHUB_OUTPUT"
+      - name: Test
+        run: |
+          echo "Commits: ${{ steps.commits.outputs.refs }}"
+  build:
+    runs-on: ubuntu-latest
+    needs: define-matrix
+    strategy:
+      matrix:
+        commit: ${{ fromJson(needs.define-matrix.outputs.commits) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.commit }}
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          check-latest: true
+      - name: Run Build-Pipeline
+        uses: dagger/dagger-for-github@v5
+        with:
+          verb: run
+          args: go run ci/main.go -cmd "go build -o output/ ./cmd/example/main.go"
+          version: "0.11.9"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: output
